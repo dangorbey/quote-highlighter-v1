@@ -35,7 +35,8 @@
     "react-native-screens": "~3.22.0",
     "react-native-web": "~0.19.6",
     "react-native-view-shot": "3.7.0",
-    "expo-sharing": "~11.5.0"
+    "expo-sharing": "~11.5.0",
+    "@shopify/react-native-skia": "0.1.196"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

@@ -7,6 +7,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   TouchableHighlight,
+  Dimensions,
 } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { useUser } from "@clerk/clerk-expo";
@@ -102,20 +103,14 @@ const CreatePage = () => {
 
       {/* <CreateCanvas myQuote={quote} /> */}
 
-      <ImageBackground
-        source={require("../../assets/images/paper-bg-01.jpg")}
-        ref={viewRef}
-        style={styles.captureView}
-        resizeMode="cover"
-      >
+      <View ref={viewRef} style={styles.captureView}>
         <View style={styles.contentView}>
-          {/* This is the new wrapper View */}
-          {/* <Example /> */}
-          <Text style={styles.lorem}>{lorem}</Text>
-          <Text style={styles.text}>{quote}</Text>
-          {/* <CreateCanvas myQuote={quote} /> */}
+          <CreateCanvas />
+          <View style={styles.overlayTextContainer}>
+            <Text style={styles.text}>{quote}</Text>
+          </View>
         </View>
-      </ImageBackground>
+      </View>
 
       <View style={{ flexDirection: "row", gap: 20 }}>
         <TouchableOpacity style={styles.shareButton} onPress={handleModalOpen}>
@@ -152,6 +147,8 @@ const styles = StyleSheet.create({
     width: 300,
     height: 300,
     justifyContent: "center",
+    alignContent: "center",
+    // alignItems: "center",
     overflow: "hidden", // Ensure no content overflows
   },
 
@@ -160,27 +157,23 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     position: "relative",
   },
-  lorem: {
+
+  overlayTextContainer: {
     position: "absolute",
-    fontFamily: "Fanwood",
-    transform: [{ scaleX: -1 }],
-    opacity: 0.03,
-    fontSize: 20,
-    padding: 22,
-    color: "#000",
+    top: 0,
     left: 0,
     right: 0,
-    zIndex: 1,
-    textShadowColor: "black",
-    textShadowOffset: { width: 0, height: 0 },
-    textShadowRadius: 2,
+    bottom: 0,
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 2,
   },
+
   text: {
     fontFamily: "Fanwood",
     fontSize: 18,
-    padding: 22,
     color: "#000",
-    zIndex: 2,
+    padding: 25,
   },
   highlight: {
     flex: 0,
