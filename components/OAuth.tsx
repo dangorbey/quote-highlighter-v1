@@ -6,6 +6,7 @@ import { Text, StyleSheet, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Ionicons } from "@expo/vector-icons";
 import type { OAuthStrategy } from "@clerk/types";
+import { MyButton } from "./myButton";
 
 type IoniconName = ComponentProps<typeof Ionicons>["name"];
 
@@ -45,7 +46,7 @@ export function OAuthButtons({
 
   return (
     <TouchableOpacity style={styles.button} onPress={onPress}>
-      <Ionicons name={buttonLogo} color={"#fff"} />
+      <Ionicons name={buttonLogo} size={14} />
       <Text style={styles.buttonText}>{buttonName}</Text>
     </TouchableOpacity>
   );
@@ -67,19 +68,23 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   button: {
-    marginVertical: 4,
-    height: 50,
-    borderRadius: 4,
-    padding: 10,
-    backgroundColor: "#6c47ff",
-    marginBottom: 20,
+    marginVertical: 5,
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+    // backgroundColor: "#6c47ff",
     alignItems: "center",
     justifyContent: "center",
     flexDirection: "row",
     gap: 10,
+    borderColor: "#000",
+    borderWidth: 2,
+    width: "90%",
+    alignSelf: "center",
   },
   buttonText: {
-    color: "#fff",
+    color: "#000",
     fontWeight: "bold",
+    fontSize: 16,
   },
 });
