@@ -1,82 +1,151 @@
-import React from "react";
-import { Text, StyleSheet, Pressable, ViewStyle } from "react-native";
+import { transform } from "@babel/core";
+import {
+  useColorScheme,
+  StyleSheet,
+  TouchableOpacity,
+  Text,
+  View,
+} from "react-native";
+import Colors from "../constants/Colors";
+import { ReactNode, cloneElement } from "react";
+import { Ionicons } from "@expo/vector-icons";
 
-type MyButtonProps = {
+export type MyButtonProps = {
   label: string;
-  styleType:
-    | "yellow"
-    | "yellowOutline"
-    | "yellowOutlineDark"
-    | "white"
-    | "whiteOutline"
-    | "black"
-    | "blackOutline";
-  onPress: () => void; // adding onPress prop
+  type: "primary" | "primaryStroke" | "secondary" | "secondaryStroke";
+  onPress?: () => void;
+  iconName?: keyof typeof Ionicons.glyphMap;
+  iconColor?: string;
 };
 
-export const MyButton = ({ label, styleType, onPress }: MyButtonProps) => {
-  const getButtonStyles = (pressed: boolean): ViewStyle => {
-    let styles: ViewStyle = {
-      borderWidth: 2,
-      width: "90%",
-      alignSelf: "center",
-      borderRadius: 10,
-      paddingVertical: 15,
-      paddingHorizontal: 20,
-      alignItems: "center",
-      justifyContent: "center",
-      marginVertical: 5,
-    };
+export default function MyButton({
+  label,
+  type = "primary",
+  onPress,
+  iconName,
+  iconColor,
+}: MyButtonProps) {
+  const theme = useColorScheme();
 
-    switch (styleType) {
-      case "yellow":
-        styles.backgroundColor = "#FFDD00";
-        styles.borderColor = "#FFDD00";
+  let buttonStyle = styles.primary;
+  let textStyle = styles.textDark;
+  let fontSize = 16;
+
+  if (theme === "light") {
+    switch (type) {
+      case "primary":
+        buttonStyle = styles.primary;
+        textStyle = styles.textLight;
         break;
-      case "yellowOutline":
-      case "yellowOutlineDark":
-        styles.backgroundColor = "transparent";
-        styles.borderColor = "#FFDD00";
+      case "primaryStroke":
+        buttonStyle = styles.primaryStrokeLight;
+        textStyle = styles.textLight;
         break;
-      case "white":
-      case "whiteOutline":
-        styles.backgroundColor =
-          styleType === "white" ? "#FFFFFF" : "transparent";
-        styles.borderColor = "#FFFFFF";
+      case "secondary":
+        buttonStyle = styles.secondaryLight;
+        textStyle = styles.textDark;
         break;
-      case "black":
-      case "blackOutline":
-        styles.backgroundColor =
-          styleType === "black" ? "black" : "transparent";
-        styles.borderColor = "black";
+      case "secondaryStroke":
+        buttonStyle = styles.secondaryStrokeLight;
+        textStyle = styles.textLight;
         break;
     }
-
-    if (pressed) {
-      styles.opacity = 0.7;
-      styles.transform = [{ scale: 0.95 }];
+  } else {
+    // theme is 'dark'
+    switch (type) {
+      case "primary":
+        buttonStyle = styles.primary;
+        textStyle = styles.textLight;
+        break;
+      case "primaryStroke":
+        buttonStyle = styles.primaryStrokeDark;
+        textStyle = styles.textDark;
+        break;
+      case "secondary":
+        buttonStyle = styles.secondaryDark;
+        textStyle = styles.textLight;
+        break;
+      case "secondaryStroke":
+        buttonStyle = styles.secondaryStrokeDark;
+        textStyle = styles.textDark;
+        break;
     }
+  }
 
-    return styles;
-  };
+  iconColor =
+    iconColor ??
+    (textStyle === styles.textLight ? Colors.light.text : Colors.dark.text);
 
-  const getTextColor = () => {
-    if (
-      ["yellow", "white", "yellowOutline", "blackOutline"].includes(styleType)
-    ) {
-      return "black";
-    }
-    return "white";
+  const renderIcon = () => {
+    if (!iconName) return null;
+    const calculatedIconSize = fontSize - 2;
+
+    return (
+      <Ionicons name={iconName} size={calculatedIconSize} color={iconColor} />
+    );
   };
 
   return (
-    <Pressable
-      style={({ pressed }) => [getButtonStyles(pressed)]}
-      onPress={onPress}
-    >
-      <Text style={{ color: getTextColor(), fontWeight: "bold", fontSize: 16 }}>
-        {label}
-      </Text>
-    </Pressable>
+    <TouchableOpacity style={[styles.button, buttonStyle]} onPress={onPress}>
+      {iconName && <View>{renderIcon()}</View>}
+      <Text style={[styles.buttonText, textStyle, { fontSize }]}>{label}</Text>
+    </TouchableOpacity>
   );
-};
+}
+
+const styles = StyleSheet.create({
+  button: {
+    width: "100%",
+    height: 50,
+    padding: 10,
+    marginVertical: 5,
+    borderRadius: 10,
+    borderWidth: 2,
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row",
+    gap: 10,
+  },
+  primary: {
+    backgroundColor: Colors.light.primary,
+    borderColor: Colors.light.primary,
+  },
+  primaryStrokeLight: {
+    backgroundColor: "transparent",
+    borderColor: Colors.light.primary,
+  },
+  primaryStrokeDark: {
+    backgroundColor: "transparent",
+    borderColor: Colors.light.primary,
+  },
+  secondaryLight: {
+    backgroundColor: Colors.light.secondary,
+    borderWidth: 2,
+    borderColor: Colors.light.secondary,
+  },
+  secondaryDark: {
+    backgroundColor: Colors.dark.secondary,
+    borderWidth: 2,
+    borderColor: Colors.dark.secondary,
+  },
+  secondaryStrokeLight: {
+    backgroundColor: "transparent",
+    borderWidth: 2,
+    borderColor: Colors.light.secondary,
+  },
+  secondaryStrokeDark: {
+    backgroundColor: "transparent",
+    borderWidth: 2,
+    borderColor: Colors.dark.secondary,
+  },
+  buttonText: {
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  textLight: {
+    color: Colors.light.text,
+  },
+  textDark: {
+    color: Colors.dark.text,
+  },
+});

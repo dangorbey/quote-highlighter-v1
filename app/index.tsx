@@ -1,5 +1,6 @@
 import { useFonts } from "expo-font";
-import { ActivityIndicator, StyleSheet, View } from "react-native";
+import { ActivityIndicator, StyleSheet } from "react-native";
+import { View } from "../components/themed/Themed";
 
 export default function App() {
   const [fontsLoaded, fontError] = useFonts({

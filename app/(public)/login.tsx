@@ -1,5 +1,4 @@
 import {
-  View,
   Text,
   StyleSheet,
   Button,
@@ -7,40 +6,21 @@ import {
   Image,
   TouchableOpacity,
   TouchableHighlight,
+  Platform,
 } from "react-native";
+import { View } from "../../components/themed/Themed";
 import React, { useState } from "react";
 import { useSignIn } from "@clerk/clerk-expo";
 import Spinner from "react-native-loading-spinner-overlay";
 import { TextInput } from "react-native-gesture-handler";
 import { Link, router } from "expo-router";
 import { OAuthButtons } from "../../components/OAuth";
-import { MyButton } from "../../components/myButton";
+import MyButton from "../../components/MyButton";
+import MyText from "../../components/MyText";
+import { Ionicons } from "@expo/vector-icons";
 
 const LoginPage = () => {
-  const { signIn, setActive, isLoaded } = useSignIn();
-
-  const [emailAddress, setEmailAddress] = useState("");
-  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-
-  const onSignInPress = async () => {
-    if (!isLoaded) {
-      return;
-    }
-    setLoading(true);
-    try {
-      const completeSignIn = await signIn.create({
-        identifier: emailAddress,
-        password,
-      });
-
-      await setActive({ session: completeSignIn.createdSessionId });
-    } catch (err: any) {
-      alert(err.errors[0].message);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
     <View style={styles.container}>
@@ -52,7 +32,7 @@ const LoginPage = () => {
           resizeMode="contain"
         />
       </View>
-      <Text
+      <MyText
         style={{
           textAlign: "center",
           marginVertical: 10,
@@ -61,28 +41,34 @@ const LoginPage = () => {
         }}
       >
         Sign in to save your designs.
-      </Text>
+      </MyText>
       <OAuthButtons
         authStrat="oauth_google"
-        buttonLogo="logo-google"
-        buttonName="Sign in with Google"
+        iconName="logo-google"
+        label="Sign in with Google"
+        type="secondaryStroke"
       />
-      <OAuthButtons
-        authStrat="oauth_apple"
-        buttonLogo="logo-apple"
-        buttonName="Sign in with Apple"
-      />
+      {Platform.OS === "ios" && (
+        <OAuthButtons
+          authStrat="oauth_apple"
+          iconName="logo-apple"
+          label="Sign in with Apple"
+          type="secondaryStroke"
+        />
+      )}
+
       <MyButton
-        label={"Login"}
-        styleType="yellow"
+        label={"Sign in with Email"}
+        type="primary"
         onPress={() => router.push("/email")}
+        iconName="mail"
       />
-      <Text style={{ textAlign: "center", marginVertical: 10 }}>
-        --- OR ---
-      </Text>
+      <MyText style={{ textAlign: "center", marginVertical: 10 }}>
+        --- or ---
+      </MyText>
       <MyButton
         label={"Create an Account"}
-        styleType="yellowOutline"
+        type="secondary"
         onPress={() => router.push("/register")}
       />
     </View>
@@ -95,39 +81,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-    padding: 20,
-    backgroundColor: "#F7F5EE",
-  },
-  inputField: {
-    marginVertical: 4,
-    height: 50,
-    borderColor: "#6c47ff",
-    borderRadius: 4,
-    padding: 10,
-    backgroundColor: "#fff",
-    marginBottom: 20,
-  },
-  button: {
-    margin: 8,
-    alignItems: "center",
+    paddingHorizontal: 40,
   },
   imageContainer: {
-    // flex: 1,
-    // height: 50,
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: 40,
-    // backgroundColor: "#fff",
-  },
-  btn: {
-    backgroundColor: "#FFDD00",
-    width: "100%",
-    height: 50,
-    alignItems: "center",
-    alignSelf: "center",
-    justifyContent: "center",
-    borderRadius: 10,
-    borderWidth: 2,
-    borderColor: "#FFDD00",
   },
 });

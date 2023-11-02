@@ -1,8 +1,9 @@
-import { View, Text, StyleSheet, TextInput, Button } from "react-native";
+import { Text, StyleSheet, TextInput, Button } from "react-native";
 import React, { useState } from "react";
 import { useSignUp } from "@clerk/clerk-expo";
 import { Stack } from "expo-router";
 import Spinner from "react-native-loading-spinner-overlay";
+import { View } from "../../components/themed/Themed";
 
 const RegisterPage = () => {
   const { isLoaded, signUp, setActive } = useSignUp();

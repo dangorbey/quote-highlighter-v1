@@ -1,19 +1,20 @@
 import { useSignIn } from "@clerk/clerk-expo";
 import React, { useState } from "react";
 import {
-  View,
   KeyboardAvoidingView,
   TextInput,
   StyleSheet,
-  Text,
   Platform,
   TouchableWithoutFeedback,
-  Button,
   Keyboard,
   Image,
 } from "react-native";
-import { MyButton } from "../../components/myButton";
+import { View } from "../../components/themed/Themed";
+import MyButton from "../../components/MyButton";
+import { router } from "expo-router";
+import MyText from "../../components/MyText";
 import { ScrollView } from "react-native-gesture-handler";
+import MyInput from "../../components/MyInput";
 
 const KeyboardAvoidingComponent = () => {
   const { signIn, setActive, isLoaded } = useSignIn();
@@ -42,94 +43,63 @@ const KeyboardAvoidingComponent = () => {
   };
 
   return (
-    <KeyboardAvoidingView
-      keyboardVerticalOffset={50}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      enabled
-      style={styles.container}
-    >
-      <ScrollView style={{ flex: 1 }}>
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View style={styles.inner}>
-            <Image
-              source={require("../../assets/images/quotes-icon.png")}
-              style={{ width: 150, height: 200, alignSelf: "center" }}
-              resizeMode="contain"
-            />
-            <Text
-              style={{
-                textAlign: "center",
-                marginVertical: 10,
-                fontWeight: "bold",
-                fontSize: 18,
-              }}
-            >
-              You're one step closer to creating amazing quotes!
-            </Text>
-            <Text style={styles.label}>Email</Text>
-            <TextInput
-              autoCapitalize="none"
-              placeholder="dan@email.com"
-              value={emailAddress}
-              onChangeText={setEmailAddress}
-              style={styles.inputField}
-            />
-            <Text style={styles.label}>Password</Text>
-            <TextInput
-              placeholder="password"
-              value={password}
-              onChangeText={setPassword}
-              secureTextEntry
-              style={styles.inputField}
-            />
-            <MyButton
-              label={"Login"}
-              styleType="yellow"
-              onPress={onSignInPress}
-            />
-          </View>
-        </TouchableWithoutFeedback>
-      </ScrollView>
-    </KeyboardAvoidingView>
+    <View style={styles.container}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        // keyboardVerticalOffset={60}
+        style={styles.avoidingView}
+      >
+        <Image
+          source={require("../../assets/images/quotes-icon.png")}
+          style={{ width: "50%", maxHeight: 100, alignSelf: "center" }}
+          resizeMode="contain"
+        />
+        <View style={{ paddingVertical: 20 }}>
+          <MyText
+            style={{
+              textAlign: "center",
+              fontWeight: "bold",
+            }}
+          >
+            Login with your email and password
+          </MyText>
+        </View>
+        <MyInput
+          autoCapitalize="none"
+          label="Email"
+          placeholder="yourname@email.com"
+          value={emailAddress}
+          onChangeText={setEmailAddress}
+        ></MyInput>
+        <MyInput
+          label="Password"
+          placeholder="password"
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry
+        ></MyInput>
+
+        <View style={{ height: 20 }}></View>
+        <MyButton label="Login" type="primary" />
+        <MyButton label="Go Back" type="secondary" onPress={router.back} />
+      </KeyboardAvoidingView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: "center",
+    paddingHorizontal: 40,
   },
-  inner: {
-    padding: 24,
+  avoidingView: {
     flex: 1,
-    justifyContent: "space-around",
+    justifyContent: "center",
   },
-  header: {
-    fontSize: 36,
-    marginBottom: 48,
-  },
-  textInput: {
+  input: {
+    borderWidth: 1,
     height: 40,
-    borderColor: "#000000",
-    borderBottomWidth: 1,
-    marginBottom: 36,
-  },
-  btnContainer: {
-    backgroundColor: "white",
-    marginTop: 12,
-  },
-  label: {
-    fontWeight: "bold",
-    marginBottom: 5,
-  },
-  inputField: {
-    marginVertical: 4,
-    height: 50,
-    borderColor: "#FFDD00",
-    borderRadius: 5,
-    padding: 10,
-    backgroundColor: "#fff",
-    marginBottom: 20,
-    borderWidth: 2,
   },
 });
 

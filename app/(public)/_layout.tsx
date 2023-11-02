@@ -9,6 +9,10 @@ const PublicLayout = () => {
         options={{ headerTitle: "Create an Account" }}
       />
       <Stack.Screen name="reset" options={{ headerTitle: "Reset Password" }} />
+      <Stack.Screen
+        name="email"
+        options={{ headerTitle: "Login with Email", headerShown: false }}
+      />
     </Stack>
   );
 };

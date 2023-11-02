@@ -29,17 +29,26 @@ const InitialLayout = () => {
 
   useEffect(() => {
     console.log("isSignedIn", isSignedIn);
+    // console.log("isLoaded", isLoaded);
+
     if (!isLoaded) return;
 
     const inTabsGroup = segments[0] === "(auth)";
+
     if (isSignedIn && !inTabsGroup) {
+      console.log("signed in, not in tabs group");
       router.replace("/library");
     } else if (!isSignedIn) {
+      console.log("signed out");
       router.replace("/login");
     }
   }, [isSignedIn]);
 
-  return <Slot />;
+  // router.replace("/login");
+  return (
+    // <Stack />
+    <Slot />
+  );
 };
 
 const Rootlayout = () => {
