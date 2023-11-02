@@ -6,7 +6,7 @@ const PublicLayout = () => {
       <Stack.Screen name="login" options={{ headerShown: false }} />
       <Stack.Screen
         name="register"
-        options={{ headerTitle: "Create an Account" }}
+        options={{ headerTitle: "Create an Account", headerShown: false }}
       />
       <Stack.Screen name="reset" options={{ headerTitle: "Reset Password" }} />
       <Stack.Screen

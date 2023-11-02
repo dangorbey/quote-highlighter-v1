@@ -2,12 +2,10 @@ import { useSignIn } from "@clerk/clerk-expo";
 import React, { useState } from "react";
 import {
   KeyboardAvoidingView,
-  TextInput,
   StyleSheet,
   Platform,
-  TouchableWithoutFeedback,
-  Keyboard,
   Image,
+  Pressable,
 } from "react-native";
 import { View } from "../../components/themed/Themed";
 import MyButton from "../../components/MyButton";
@@ -16,7 +14,7 @@ import MyText from "../../components/MyText";
 import { ScrollView } from "react-native-gesture-handler";
 import MyInput from "../../components/MyInput";
 
-const KeyboardAvoidingComponent = () => {
+const EmailPage = () => {
   const { signIn, setActive, isLoaded } = useSignIn();
 
   const [emailAddress, setEmailAddress] = useState("");
@@ -64,6 +62,7 @@ const KeyboardAvoidingComponent = () => {
             Login with your email and password
           </MyText>
         </View>
+
         <MyInput
           autoCapitalize="none"
           label="Email"
@@ -77,10 +76,23 @@ const KeyboardAvoidingComponent = () => {
           value={password}
           onChangeText={setPassword}
           secureTextEntry
-        ></MyInput>
+        />
+
+        <Pressable onPress={() => router.replace("/reset")}>
+          <MyText
+            type="caption"
+            style={{
+              alignSelf: "flex-end",
+              color: "#0070F3",
+              // fontWeight: "bold",
+            }}
+          >
+            Forgot Password?
+          </MyText>
+        </Pressable>
 
         <View style={{ height: 20 }}></View>
-        <MyButton label="Login" type="primary" />
+        <MyButton label="Login" type="primary" onPress={onSignInPress} />
         <MyButton label="Go Back" type="secondary" onPress={router.back} />
       </KeyboardAvoidingView>
     </View>
@@ -103,4 +115,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default KeyboardAvoidingComponent;
+export default EmailPage;

@@ -12,7 +12,7 @@ interface MyTextProps extends TextProps {
 // Make sure to define or import your styles object
 const styles = {
   title: {
-    fontSize: 32,
+    fontSize: 24,
     fontWeight: "bold",
   },
   body: {
