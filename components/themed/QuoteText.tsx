@@ -35,6 +35,11 @@ export default function MyText({
 
   // You should return combining your style with the predefined styles
   return (
-    <Text style={[styles[type], { color: "#000" }, style]}>{children}</Text>
+    <Text
+      style={[styles[type], { color: "#000" }, style]}
+      allowFontScaling={false}
+    >
+      {children}
+    </Text>
   );
 }
