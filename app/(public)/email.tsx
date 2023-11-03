@@ -7,6 +7,7 @@ import {
   Image,
   Pressable,
   TextInput,
+  useColorScheme,
 } from "react-native";
 import { View } from "../../components/themed/Themed";
 import MyButton from "../../components/MyButton";
@@ -24,6 +25,8 @@ const EmailPage = () => {
 
   const emailAddressRef = useRef<TextInput>(null);
   const passwordRef = useRef<TextInput>(null);
+
+  const theme = useColorScheme();
 
   const onSignInPress = async () => {
     if (!isLoaded) {
@@ -52,7 +55,11 @@ const EmailPage = () => {
         style={styles.avoidingView}
       >
         <Image
-          source={require("../../assets/images/quotes-icon.png")}
+          source={
+            theme === "dark"
+              ? require("../../assets/images/quotes-icon-dark.png")
+              : require("../../assets/images/quotes-icon.png")
+          }
           style={{ width: "50%", maxHeight: 100, alignSelf: "center" }}
           resizeMode="contain"
         />

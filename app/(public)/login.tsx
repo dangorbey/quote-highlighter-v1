@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   TouchableHighlight,
   Platform,
+  useColorScheme,
 } from "react-native";
 import { View } from "../../components/themed/Themed";
 import React, { useState } from "react";
@@ -18,16 +19,22 @@ import { OAuthButtons } from "../../components/OAuth";
 import MyButton from "../../components/MyButton";
 import MyText from "../../components/MyText";
 import { Ionicons } from "@expo/vector-icons";
+import { useTheme } from "@react-navigation/native";
 
 const LoginPage = () => {
   const [loading, setLoading] = useState(false);
+  const theme = useColorScheme();
 
   return (
     <View style={styles.container}>
       <Spinner visible={loading} />
       <View style={styles.imageContainer}>
         <Image
-          source={require("../../assets/images/quotes-icon-text.png")}
+          source={
+            theme === "dark"
+              ? require("../../assets/images/quotes-icon-text-dark.png")
+              : require("../../assets/images/quotes-icon-text.png")
+          }
           style={{ width: 250, height: 200 }}
           resizeMode="contain"
         />

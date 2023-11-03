@@ -7,6 +7,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   Pressable,
+  useColorScheme,
 } from "react-native";
 import React, { useRef, useState } from "react";
 import { useSignUp } from "@clerk/clerk-expo";
@@ -100,7 +101,7 @@ const RegisterPage = () => {
     setPendingVerification(false);
     setCode("");
   };
-
+  const theme = useColorScheme();
   return (
     <View style={styles.container}>
       <Stack.Screen options={{ headerBackVisible: !pendingVerifaication }} />
@@ -111,7 +112,11 @@ const RegisterPage = () => {
         style={styles.avoidingView}
       >
         <Image
-          source={require("../../assets/images/quotes-icon.png")}
+          source={
+            theme === "dark"
+              ? require("../../assets/images/quotes-icon-dark.png")
+              : require("../../assets/images/quotes-icon.png")
+          }
           style={{ width: "50%", maxHeight: 100, alignSelf: "center" }}
           resizeMode="contain"
         />

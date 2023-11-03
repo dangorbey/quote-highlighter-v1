@@ -1,12 +1,4 @@
-import {
-  StyleSheet,
-  TextInput,
-  Button,
-  Image,
-  KeyboardAvoidingView,
-  Platform,
-  useColorScheme,
-} from "react-native";
+import { Image, KeyboardAvoidingView, Platform } from "react-native";
 import React, { useState } from "react";
 import { Stack, router } from "expo-router";
 import { useSignIn } from "@clerk/clerk-expo";
@@ -14,8 +6,9 @@ import { View } from "../../components/themed/Themed";
 import MyInput from "../../components/MyInput";
 import MyButton from "../../components/MyButton";
 import MyText from "../../components/MyText";
+import { styles } from "./reset";
 
-const PwReset = () => {
+export const PwReset = () => {
   const [emailAddress, setEmailAddress] = useState("");
   const [password, setPassword] = useState("");
   const [code, setCode] = useState("");
@@ -23,7 +16,7 @@ const PwReset = () => {
   const { signIn, setActive } = useSignIn();
 
   const theme = useColorScheme();
-
+  //
   // Request a passowrd reset code by email
   const onRequestReset = async () => {
     try {
@@ -154,17 +147,3 @@ const PwReset = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    paddingHorizontal: 40,
-  },
-  avoidingView: {
-    flex: 1,
-    justifyContent: "center",
-  },
-});
-
-export default PwReset;

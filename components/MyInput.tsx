@@ -1,5 +1,11 @@
 import React, { useState, forwardRef } from "react";
-import { View, TextInput, TextInputProps, StyleSheet } from "react-native";
+import {
+  View,
+  TextInput,
+  TextInputProps,
+  StyleSheet,
+  useColorScheme,
+} from "react-native";
 import MyText from "./MyText";
 import Colors from "../constants/Colors";
 
@@ -12,6 +18,14 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 5,
     padding: 10,
+  },
+  inputLight: {
+    borderColor: Colors.light.secondary,
+    color: Colors.light.secondary,
+  },
+  inputDark: {
+    borderColor: Colors.dark.secondary,
+    color: Colors.dark.secondary,
   },
   inputFocus: {
     backgroundColor: Colors.light.primary + "10",
@@ -30,11 +44,15 @@ interface MyInputProps extends TextInputProps {
 const MyInput = forwardRef<TextInput, MyInputProps>(
   ({ label, style, onSubmitEditing, returnKeyType, ...props }, ref) => {
     const [isFocused, setFocus] = useState(false);
+    const theme = useColorScheme();
+
+    const inputStyle = theme === "dark" ? styles.inputDark : styles.inputLight;
 
     const combinedStyles = [
       styles.input,
+      inputStyle,
       isFocused && styles.inputFocus,
-      style, // apply last to allow override of predefined styles
+      style,
     ];
 
     return (
