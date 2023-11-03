@@ -1,7 +1,18 @@
-import { View, StyleSheet, TextInput, Button } from "react-native";
+import {
+  StyleSheet,
+  TextInput,
+  Button,
+  Image,
+  KeyboardAvoidingView,
+  Platform,
+} from "react-native";
 import React, { useState } from "react";
-import { Stack } from "expo-router";
+import { Stack, router } from "expo-router";
 import { useSignIn } from "@clerk/clerk-expo";
+import { View } from "../../components/themed/Themed";
+import MyInput from "../../components/MyInput";
+import MyButton from "../../components/MyButton";
+import MyText from "../../components/MyText";
 
 const PwReset = () => {
   const [emailAddress, setEmailAddress] = useState("");
@@ -45,52 +56,94 @@ const PwReset = () => {
     }
   };
 
+  const onCancelVerificationPress = () => {
+    setSuccessfulCreation(false);
+    setCode("");
+  };
+
   return (
     <View style={styles.container}>
       <Stack.Screen options={{ headerBackVisible: !successfulCreation }} />
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={60}
+        style={styles.avoidingView}
+      >
+        <Image
+          source={require("../../assets/images/quotes-icon.png")}
+          style={{ width: "50%", maxHeight: 100, alignSelf: "center" }}
+          resizeMode="contain"
+        />
+        {!successfulCreation && (
+          <>
+            <View style={{ paddingBottom: 20 }}>
+              <MyText
+                type="title"
+                style={{
+                  textAlign: "center",
+                }}
+              >
+                Forgot your password?
+              </MyText>
+            </View>
+            <MyInput
+              label="Email Address"
+              autoCapitalize="none"
+              placeholder="simon@galaxies.dev"
+              value={emailAddress}
+              onChangeText={setEmailAddress}
+            />
 
-      {!successfulCreation && (
-        <>
-          <TextInput
-            autoCapitalize="none"
-            placeholder="simon@galaxies.dev"
-            value={emailAddress}
-            onChangeText={setEmailAddress}
-            style={styles.inputField}
-          />
+            <MyButton
+              onPress={onRequestReset}
+              label="Send Reset Email"
+              type="primary"
+            />
+            <MyButton onPress={router.back} label="Cancel" type="secondary" />
+          </>
+        )}
 
-          <Button
-            onPress={onRequestReset}
-            title="Send Reset Email"
-            color={"#6c47ff"}
-          ></Button>
-        </>
-      )}
-
-      {successfulCreation && (
-        <>
-          <View>
-            <TextInput
+        {successfulCreation && (
+          <>
+            <View style={{ paddingBottom: 20 }}>
+              <MyText
+                type="title"
+                style={{
+                  textAlign: "center",
+                }}
+              >
+                Check your email!
+              </MyText>
+            </View>
+            <MyInput
+              label="Code"
               value={code}
               placeholder="Code..."
-              style={styles.inputField}
               onChangeText={setCode}
+              keyboardType="number-pad"
             />
-            <TextInput
+            <MyInput
+              label="New Password"
               placeholder="New password"
               value={password}
               onChangeText={setPassword}
+              keyboardType="default"
               secureTextEntry
-              style={styles.inputField}
             />
-          </View>
-          <Button
-            onPress={onReset}
-            title="Set new Password"
-            color={"#6c47ff"}
-          ></Button>
-        </>
-      )}
+            <View style={{ height: 20 }}></View>
+            <MyButton
+              onPress={onReset}
+              label="Set New Password"
+              type="primary"
+            />
+            <MyButton
+              onPress={onCancelVerificationPress}
+              label="Cancel"
+              type="secondary"
+            />
+          </>
+        )}
+      </KeyboardAvoidingView>
     </View>
   );
 };
@@ -99,20 +152,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-    padding: 20,
+    paddingHorizontal: 40,
   },
-  inputField: {
-    marginVertical: 4,
-    height: 50,
-    borderWidth: 1,
-    borderColor: "#6c47ff",
-    borderRadius: 4,
-    padding: 10,
-    backgroundColor: "#fff",
-  },
-  button: {
-    margin: 8,
-    alignItems: "center",
+  avoidingView: {
+    flex: 1,
+    justifyContent: "center",
   },
 });
 
