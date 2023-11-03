@@ -15,6 +15,7 @@ const CreatePage = () => {
   const { user } = useUser();
 
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [clearHighlights, setClearHighlights] = useState(false);
 
   function handleModalOpen() {
     setIsModalVisible(true); // Just closing the modal without saving
@@ -28,6 +29,10 @@ const CreatePage = () => {
 
     setIsModalVisible(false); // Closing the modal after saving
   }
+
+  const onClearHighlightsDone = () => {
+    setClearHighlights(false);
+  };
 
   const [quote, setQuote] = useState(
     `There is an entry in Baudelaire' Journal Intime that is fearful in the precision of its cynicism: "One must work, if not from taste then at least from despair. For, to reduce everything to a single truth: work is less boring than pleasure.`
@@ -59,6 +64,10 @@ const CreatePage = () => {
     }
   };
 
+  function handleClearHighlights() {
+    setClearHighlights(true);
+  }
+
   return (
     <View style={styles.container}>
       <MyText type="title">Style Your Quote</MyText>
@@ -75,7 +84,14 @@ const CreatePage = () => {
         >
           <>
             <View style={styles.overlayTextContainer}>
-              {quote && <Highlighter key={quote} quote={quote} />}
+              {quote && (
+                <Highlighter
+                  key={quote}
+                  quote={quote}
+                  clearHighlights={clearHighlights}
+                  onClearHighlightsDone={onClearHighlightsDone}
+                />
+              )}
             </View>
 
             <CreateCanvas />
@@ -95,6 +111,13 @@ const CreatePage = () => {
           type="primary"
           iconName="share"
           onPress={shareDummyImage}
+          style={{ flex: 1 }}
+        />
+        <MyButton
+          label="Clear"
+          type="secondary"
+          iconName="close-circle-outline"
+          onPress={handleClearHighlights}
           style={{ flex: 1 }}
         />
       </View>
@@ -140,6 +163,6 @@ const styles = StyleSheet.create({
   buttonRow: {
     width: 300,
     flexDirection: "row",
-    gap: 20,
+    gap: 10,
   },
 });

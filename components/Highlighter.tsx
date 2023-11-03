@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { StyleSheet, View, PanResponder } from "react-native";
 import QuoteText from "./themed/QuoteText";
 
@@ -9,12 +9,26 @@ interface WordState {
 
 interface HighlighterProps {
   quote: string;
+  clearHighlights: boolean;
+  onClearHighlightsDone?: () => void; // New callback function
 }
 
-const Highlighter: React.FC<HighlighterProps> = ({ quote }) => {
+const Highlighter: React.FC<HighlighterProps> = ({
+  quote,
+  clearHighlights,
+  onClearHighlightsDone,
+}) => {
   const [words, setWords] = useState<WordState[]>(
     quote.split(" ").map((word) => ({ word, highlighted: false }))
   );
+
+  useEffect(() => {
+    // If clearHighlights is true, reset all highlights and set it back to false
+    if (clearHighlights) {
+      setWords(words.map((word) => ({ ...word, highlighted: false })));
+      onClearHighlightsDone && onClearHighlightsDone(); // Call the callback function
+    }
+  }, [clearHighlights]);
 
   const wordRefs = useRef<(View | null)[]>([]);
   const highlightedIndexes = useRef<Set<number>>(new Set());
