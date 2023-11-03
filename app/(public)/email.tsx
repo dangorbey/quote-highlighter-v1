@@ -1,11 +1,12 @@
 import { useSignIn } from "@clerk/clerk-expo";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   KeyboardAvoidingView,
   StyleSheet,
   Platform,
   Image,
   Pressable,
+  TextInput,
 } from "react-native";
 import { View } from "../../components/themed/Themed";
 import MyButton from "../../components/MyButton";
@@ -20,6 +21,9 @@ const EmailPage = () => {
   const [emailAddress, setEmailAddress] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const emailAddressRef = useRef<TextInput>(null);
+  const passwordRef = useRef<TextInput>(null);
 
   const onSignInPress = async () => {
     if (!isLoaded) {
@@ -69,12 +73,18 @@ const EmailPage = () => {
           placeholder="yourname@email.com"
           value={emailAddress}
           onChangeText={setEmailAddress}
+          ref={emailAddressRef}
+          returnKeyType="next"
+          onSubmitEditing={() => passwordRef.current?.focus()}
         ></MyInput>
         <MyInput
           label="Password"
           placeholder="password"
           value={password}
           onChangeText={setPassword}
+          ref={passwordRef}
+          returnKeyType="done"
+          onSubmitEditing={onSignInPress}
           secureTextEntry
         />
 

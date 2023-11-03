@@ -8,7 +8,7 @@ import {
   Platform,
   Pressable,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useSignUp } from "@clerk/clerk-expo";
 import { Stack, router } from "expo-router";
 import Spinner from "react-native-loading-spinner-overlay";
@@ -27,6 +27,11 @@ const RegisterPage = () => {
   const [pendingVerifaication, setPendingVerification] = useState(false);
   const [code, setCode] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const fullNameRef = useRef<TextInput>(null);
+  const emailAddressRef = useRef<TextInput>(null);
+  const passwordRef = useRef<TextInput>(null);
+  const confirmPasswordRef = useRef<TextInput>(null);
 
   const getPasswordInputStyle = () => {
     if (confirmPassword.length > 0 && password !== confirmPassword) {
@@ -132,6 +137,9 @@ const RegisterPage = () => {
               placeholder="John Doe"
               value={fullName}
               onChangeText={setFullName}
+              ref={fullNameRef}
+              returnKeyType="next"
+              onSubmitEditing={() => emailAddressRef.current?.focus()}
             />
             <MyInput
               autoCapitalize="none"
@@ -139,6 +147,9 @@ const RegisterPage = () => {
               placeholder="yourname@email.com"
               value={emailAddress}
               onChangeText={setEmailAddress}
+              ref={emailAddressRef}
+              returnKeyType="next"
+              onSubmitEditing={() => passwordRef.current?.focus()}
             />
             <MyInput
               secureTextEntry
@@ -147,6 +158,9 @@ const RegisterPage = () => {
               value={password}
               onChangeText={setPassword}
               style={getPasswordInputStyle()}
+              ref={passwordRef}
+              returnKeyType="next"
+              onSubmitEditing={() => confirmPasswordRef.current?.focus()}
             />
             <MyInput
               secureTextEntry
@@ -155,6 +169,9 @@ const RegisterPage = () => {
               value={confirmPassword}
               onChangeText={setConfirmPassword}
               style={getPasswordInputStyle()}
+              ref={confirmPasswordRef}
+              returnKeyType="done"
+              onSubmitEditing={onSignupPress}
             />
 
             <View style={{ height: 20 }}></View>
@@ -171,6 +188,7 @@ const RegisterPage = () => {
                 placeholder="Code..."
                 style={styles.inputField}
                 onChangeText={setCode}
+                keyboardType="number-pad"
               />
             </View>
             <MyButton
