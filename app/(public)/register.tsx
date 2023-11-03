@@ -97,10 +97,8 @@ const RegisterPage = () => {
   };
 
   const onCancelVerificationPress = () => {
-    // Just reset the verification state
     setPendingVerification(false);
     setCode("");
-    // Don't reset the email, name, and password so that the user can modify if they want
   };
 
   return (
