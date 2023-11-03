@@ -10,11 +10,11 @@ import {
   useColorScheme,
 } from "react-native";
 import { View } from "../../components/themed/Themed";
-import MyButton from "../../components/MyButton";
+import MyButton from "../../components/themed/MyButton";
 import { router } from "expo-router";
-import MyText from "../../components/MyText";
+import MyText from "../../components/themed/MyText";
 import { ScrollView } from "react-native-gesture-handler";
-import MyInput from "../../components/MyInput";
+import MyInput from "../../components/themed/MyInput";
 
 const EmailPage = () => {
   const { signIn, setActive, isLoaded } = useSignIn();

@@ -1,7 +1,19 @@
-import { Modal, View, Text, Pressable, StyleSheet } from "react-native";
-import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import {
+  Modal,
+  Text,
+  Pressable,
+  StyleSheet,
+  TouchableOpacity,
+  useColorScheme,
+} from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 import { useEffect, useState } from "react";
+import { View } from "./themed/Themed";
+import Colors from "../constants/Colors";
+import MyText from "./themed/MyText";
+import { HighlightCanvas } from "./HighlightCanvas";
+import MyInput from "./themed/MyInput";
+import ParagraphInput from "./ParagraphInput";
 
 type TextEditorProps = {
   quote: string;
@@ -32,15 +44,24 @@ export function TextEditor({
       <View style={styles.modalContent}>
         <View style={styles.titleContainer}>
           <Pressable onPress={onClose}>
-            <Text style={styles.cancel}>Cancel</Text>
+            <MyText style={styles.cancel}>Cancel</MyText>
           </Pressable>
-          <Pressable onPress={() => onSave(localQuote)}>
-            <Text style={styles.save}>Save</Text>
-          </Pressable>
+          <TouchableOpacity
+            activeOpacity={0.6}
+            onPress={() => onSave(localQuote)}
+            style={styles.saveButtonContainer}
+          >
+            <View
+              style={{ flex: 1, width: 100, backgroundColor: "transparent" }}
+            >
+              <HighlightCanvas />
+            </View>
+            <Text style={styles.saveButtonText}>Save</Text>
+          </TouchableOpacity>
         </View>
         <View style={styles.textBox}>
-          <TextInput
-            style={styles.input}
+          <ParagraphInput
+            // style={styles.input}
             multiline
             onChangeText={setLocalQuote}
             value={localQuote}
@@ -66,7 +87,7 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     height: 60,
-    backgroundColor: "#fff",
+    // backgroundColor: Colors.dark.secondary,
     borderTopRightRadius: 10,
     borderTopLeftRadius: 10,
     paddingHorizontal: 20,
@@ -76,11 +97,7 @@ const styles = StyleSheet.create({
     borderBottomColor: "#ccc",
     borderBottomWidth: 1,
   },
-  save: {
-    color: "#6c47ff",
-    fontWeight: "bold",
-    fontSize: 16,
-  },
+
   cancel: {
     fontWeight: "bold",
     fontSize: 16,
@@ -93,13 +110,27 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
   },
   textBox: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 20,
+    paddingHorizontal: 20,
   },
   input: {
     width: "100%",
     height: "100%",
+  },
+  saveButtonContainer: {
+    width: 100,
+    height: 200,
+    justifyContent: "center",
+    alignItems: "center",
+    position: "relative",
+  },
+  saveButtonText: {
+    position: "absolute",
+    fontWeight: "bold",
+    fontSize: 16,
+    // color: "#fff", // Assuming you want the text to be white to contrast with the HighlightCanvas
+    textAlign: "center",
+    backgroundColor: "transparent", // Ensure the background doesn't cover the canvas
+    padding: 10,
+    borderRadius: 20,
   },
 });

@@ -16,8 +16,8 @@ import Spinner from "react-native-loading-spinner-overlay";
 import { TextInput } from "react-native-gesture-handler";
 import { Link, router } from "expo-router";
 import { OAuthButtons } from "../../components/OAuth";
-import MyButton from "../../components/MyButton";
-import MyText from "../../components/MyText";
+import MyButton from "../../components/themed/MyButton";
+import MyText from "../../components/themed/MyText";
 import { Ionicons } from "@expo/vector-icons";
 import { useTheme } from "@react-navigation/native";
 

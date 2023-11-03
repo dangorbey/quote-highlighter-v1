@@ -1,4 +1,3 @@
-import { transform } from "@babel/core";
 import {
   useColorScheme,
   StyleSheet,
@@ -6,8 +5,7 @@ import {
   Text,
   View,
 } from "react-native";
-import Colors from "../constants/Colors";
-import { ReactNode, cloneElement } from "react";
+import Colors from "../../constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 
 export type MyButtonProps = {
@@ -16,6 +14,7 @@ export type MyButtonProps = {
   onPress?: () => void;
   iconName?: keyof typeof Ionicons.glyphMap;
   iconColor?: string;
+  style?: object;
 };
 
 export default function MyButton({
@@ -24,6 +23,7 @@ export default function MyButton({
   onPress,
   iconName,
   iconColor,
+  style,
 }: MyButtonProps) {
   const theme = useColorScheme();
 
@@ -86,7 +86,10 @@ export default function MyButton({
   };
 
   return (
-    <TouchableOpacity style={[styles.button, buttonStyle]} onPress={onPress}>
+    <TouchableOpacity
+      style={[styles.button, buttonStyle, style]}
+      onPress={onPress}
+    >
       {iconName && <View>{renderIcon()}</View>}
       <Text style={[styles.buttonText, textStyle, { fontSize }]}>{label}</Text>
     </TouchableOpacity>

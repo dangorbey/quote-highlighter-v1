@@ -1,12 +1,16 @@
-import { Image, KeyboardAvoidingView, Platform } from "react-native";
+import {
+  Image,
+  KeyboardAvoidingView,
+  Platform,
+  useColorScheme,
+} from "react-native";
 import React, { useState } from "react";
 import { Stack, router } from "expo-router";
 import { useSignIn } from "@clerk/clerk-expo";
 import { View } from "../../components/themed/Themed";
-import MyInput from "../../components/MyInput";
-import MyButton from "../../components/MyButton";
-import MyText from "../../components/MyText";
-import { styles } from "./reset";
+import MyInput from "../../components/themed/MyInput";
+import MyButton from "../../components/themed/MyButton";
+import MyText from "../../components/themed/MyText";
 
 export const PwReset = () => {
   const [emailAddress, setEmailAddress] = useState("");
@@ -147,3 +151,21 @@ export const PwReset = () => {
     </View>
   );
 };
+
+import { StyleSheet } from "react-native";
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    // Add your styling properties here
+  },
+  avoidingView: {
+    width: "100%",
+    // Other styling properties for KeyboardAvoidingView
+  },
+  // Add additional styles if needed
+});
+
+export default styles;

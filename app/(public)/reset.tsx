@@ -11,9 +11,9 @@ import React, { useState } from "react";
 import { Stack, router } from "expo-router";
 import { useSignIn } from "@clerk/clerk-expo";
 import { View } from "../../components/themed/Themed";
-import MyInput from "../../components/MyInput";
-import MyButton from "../../components/MyButton";
-import MyText from "../../components/MyText";
+import MyInput from "../../components/themed/MyInput";
+import MyButton from "../../components/themed/MyButton";
+import MyText from "../../components/themed/MyText";
 
 const PwReset = () => {
   const [emailAddress, setEmailAddress] = useState("");

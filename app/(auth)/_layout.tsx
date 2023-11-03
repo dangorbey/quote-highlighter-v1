@@ -2,6 +2,7 @@ import { useAuth } from "@clerk/clerk-expo";
 import { Ionicons } from "@expo/vector-icons";
 import { Button, Pressable } from "react-native";
 import { Slot, Stack, Tabs, router } from "expo-router";
+import Colors from "../../constants/Colors";
 
 export const LogoutButton = () => {
   const { signOut } = useAuth();
@@ -23,9 +24,9 @@ const TabsPage = () => {
     <Tabs
       screenOptions={{
         headerStyle: {
-          backgroundColor: "#6c47ff",
+          backgroundColor: Colors.light.primary,
         },
-        headerTintColor: "#fff",
+        headerTintColor: Colors.light.text,
       }}
     >
       <Tabs.Screen
@@ -43,10 +44,10 @@ const TabsPage = () => {
         name="create"
         options={{
           headerTitle: "Create a Quote",
+          headerShown: false,
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="add-circle" size={size} color={color} />
           ),
-          // tabBarShowLabel: false,
         }}
         redirect={!isSignedIn}
       />
@@ -64,7 +65,7 @@ const TabsPage = () => {
         listeners={() => ({
           tabPress: (e) => {
             e.preventDefault();
-            router.push("/profile"); // <-- Here you put the name where the chat component is declared
+            router.push("/profile");
           },
         })}
       />

@@ -1,20 +1,15 @@
-import {
-  View,
-  Text,
-  Alert,
-  Button,
-  ImageBackground,
-  StyleSheet,
-  TouchableOpacity,
-  TouchableHighlight,
-  Dimensions,
-} from "react-native";
+import { Text, ImageBackground, StyleSheet } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { useUser } from "@clerk/clerk-expo";
 import { CreateCanvas } from "../../components/CreateCanvas";
 import { captureRef } from "react-native-view-shot";
 import * as Sharing from "expo-sharing";
 import { TextEditor } from "../../components/TextEditor";
+import { View } from "../../components/themed/Themed";
+import MyButton from "../../components/themed/MyButton";
+import MyText from "../../components/themed/MyText";
+import Highlighter from "../../components/Highlighter";
+import QuoteText from "../../components/themed/QuoteText";
 
 const CreatePage = () => {
   const { user } = useUser();
@@ -30,6 +25,7 @@ const CreatePage = () => {
 
   function handleSave(newQuote: string) {
     setQuote(newQuote); // Updating the quote
+
     setIsModalVisible(false); // Closing the modal after saving
   }
 
@@ -63,64 +59,44 @@ const CreatePage = () => {
     }
   };
 
-  const NO_WIDTH_SPACE = "​"; // This is a special char you should copy and paste, not an empty string!
-
-  interface TextProps {
-    children: React.ReactNode;
-  }
-
-  const Example: React.FC = () => {
-    const highlight = (string: string) =>
-      string.split(" ").map((word, i) => (
-        <Text key={i}>
-          <Text style={styles.highlight}>{word} </Text>
-          {NO_WIDTH_SPACE}
-        </Text>
-      ));
-
-    return (
-      <Text style={styles.text}>
-        Thus in love the free-lovers say: 'Let us have the splendor of offering
-        ourselves without the peril of committing ourselves; let us see whether{" "}
-        {highlight("one cannot commit suicide an unlimited number of times.")}
-      </Text>
-    );
-  };
-
   return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: "#fff",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
-      <Text style={{ fontWeight: "bold", fontSize: 20, marginBottom: 10 }}>
-        Create a Quote
-      </Text>
-      {/* {quote && <Text>{quote}</Text>} */}
+    <View style={styles.container}>
+      <MyText type="title">Style Your Quote</MyText>
+      <MyText type="quote">
+        Tap on words to <QuoteText type="highlight">highlight</QuoteText> them!
+      </MyText>
+      <View style={{ height: 10 }} />
+      <View style={{ borderColor: "#fff", borderWidth: 4, borderRadius: 5 }}>
+        <ImageBackground
+          source={require("../../assets/images/paper-bg-01.jpg")}
+          resizeMode="cover"
+          ref={viewRef}
+          style={styles.captureView}
+        >
+          <>
+            <View style={styles.overlayTextContainer}>
+              {quote && <Highlighter key={quote} quote={quote} />}
+            </View>
 
-      {/* <CreateCanvas myQuote={quote} /> */}
-
-      <View ref={viewRef} style={styles.captureView}>
-        <View style={styles.contentView}>
-          <CreateCanvas />
-          <View style={styles.overlayTextContainer}>
-            <Text style={styles.text}>{quote}</Text>
-          </View>
-        </View>
+            <CreateCanvas />
+          </>
+        </ImageBackground>
       </View>
-
-      <View style={{ flexDirection: "row", gap: 20 }}>
-        <TouchableOpacity style={styles.shareButton} onPress={handleModalOpen}>
-          <Text style={styles.shareButtonText}>Edit</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.shareButton} onPress={shareDummyImage}>
-          <Text style={styles.shareButtonText}>Share</Text>
-        </TouchableOpacity>
-        {/* <Button onPress={getUserInput} title="Edit Quote" /> */}
-        {/* <Button onPress={shareDummyImage} title="Save Quote" /> */}
+      <View style={styles.buttonRow}>
+        <MyButton
+          label="Edit"
+          type="primary"
+          iconName="pencil"
+          onPress={handleModalOpen}
+          style={{ flex: 1 }}
+        />
+        <MyButton
+          label="Share"
+          type="primary"
+          iconName="share"
+          onPress={shareDummyImage}
+          style={{ flex: 1 }}
+        />
       </View>
       <TextEditor
         quote={quote}
@@ -137,10 +113,9 @@ export default CreatePage;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
-    gap: 20,
+    gap: 10,
   },
   captureView: {
     aspectRatio: 1 / 1,
@@ -148,16 +123,8 @@ const styles = StyleSheet.create({
     height: 300,
     justifyContent: "center",
     alignContent: "center",
-    // alignItems: "center",
-    overflow: "hidden", // Ensure no content overflows
+    overflow: "hidden",
   },
-
-  contentView: {
-    flex: 1,
-    justifyContent: "center",
-    position: "relative",
-  },
-
   overlayTextContainer: {
     position: "absolute",
     top: 0,
@@ -167,29 +134,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     zIndex: 2,
-  },
-
-  text: {
-    fontFamily: "Fanwood",
-    fontSize: 18,
-    color: "#000",
+    backgroundColor: "transparent",
     padding: 25,
   },
-  highlight: {
-    flex: 0,
-    backgroundColor: "yellow",
-  },
-  shareButton: {
-    backgroundColor: "#6c47ff",
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 5,
-    marginVertical: 10,
-  },
-  shareButtonText: {
-    color: "#FFF",
-    fontSize: 16,
-    textAlign: "center",
-    fontWeight: "bold",
+  buttonRow: {
+    width: 300,
+    flexDirection: "row",
+    gap: 20,
   },
 });

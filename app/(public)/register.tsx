@@ -14,9 +14,9 @@ import { useSignUp } from "@clerk/clerk-expo";
 import { Stack, router } from "expo-router";
 import Spinner from "react-native-loading-spinner-overlay";
 import { View } from "../../components/themed/Themed";
-import MyInput from "../../components/MyInput";
-import MyButton from "../../components/MyButton";
-import MyText from "../../components/MyText";
+import MyInput from "../../components/themed/MyInput";
+import MyButton from "../../components/themed/MyButton";
+import MyText from "../../components/themed/MyText";
 
 const RegisterPage = () => {
   const { isLoaded, signUp, setActive } = useSignUp();

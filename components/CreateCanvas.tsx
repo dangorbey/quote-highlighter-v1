@@ -18,7 +18,7 @@ export const CreateCanvas = () => {
   const fontSize = 18;
   const font = useFont(require("../assets/fonts/Fanwood.otf"), fontSize);
   const lorem =
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam quis sem orci. Donec eu sem sapien. Fusce iaculis ipsum sed ipsum suscipit, vel venenatis neque bibendum. Vestibulum eget cursus nisi, vel feugiat tortor. Morbi imperdiet malesuada tincidunt. Duis sed ante pretium, dapibus ligula vitae, malesuada justo. Nulla hendrerit, diam ac ornare convallis, tellus orci semper nisl, in vulputate erat nisi placerat enim. Proin non ultrices eros, ac mattis lorem. Proin pharetra sem nec velit pellentesque lacinia. Suspendisse vitae consectetur enim, eu malesuada sem. Maecenas sit amet facilisis nulla. Donec eget augue a lacus porta fermentum. Maecenas efficitur tortor id lacus auctor, vel efficitur erat porttitor. Proin nec ante vitae mi consectetur lacinia. Etiam pellentesque volutpat nunc vitae congue.";
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam quis sem orci. Donec eu sem sapien. Fusce iaculis ipsum sed ipsum suscipit, vel venenatis neque bibendum. Vestibulum eget cursus nisi, vel feugiat tortor. Morbi imperdiet malesuada tincidunt. Duis sed ante pretium, dapibus ligula vitae, malesuada justo. Nulla hendrerit, diam ac ornare convallis, tellus orci semper nisl, in vulputate erat nisi placerat enim. Proin non ultrices eros, ac mattis lorem. Proin pharetra sem nec velit pellentesque lacinia. Suspendisse vitae consectetur enim, eu malesuada sem. Maecenas sit amet facilisis nulla. Donec eget augue a lacus porta fermentum. Maecenas efficitur tortor id lacus auctor, vel efficitur erat porttitor. Proin nec ante vitae mi consectetur lacinia. Etiam pellentesque volutpat nunc vitae congue. Duis sed ante pretium, dapibus ligula vitae, malesuada justo. Nulla hendrerit, diam ac ornare convallis, tellus orci semper nisl, in vulputate erat nisi placerat enim.";
 
   const image = useImage(require("../assets/images/paper-bg-01.jpg"));
 
@@ -37,7 +37,7 @@ export const CreateCanvas = () => {
         opacity={0.05}
         key={index}
         x={-canvasWidth!}
-        y={yPosition + index * (fontSize + 5)} // Increment y position for each line
+        y={yPosition + index * (fontSize + 4)} // Increment y position for each line
         text={line}
         font={font}
         transform={[{ scaleX: -1 }]}
@@ -58,22 +58,22 @@ export const CreateCanvas = () => {
     <Canvas style={{ flex: 1 }} onLayout={onLayout}>
       {canvasWidth && canvasHeight && (
         <>
-          <Image
+          {/* <Image
             image={image}
             fit="contain"
             x={0}
             y={0}
             width={canvasWidth * 5}
             height={canvasHeight * 5}
-          />
-          <Rect
+          /> */}
+          {/* <Rect
             x={0}
             y={0}
             width={canvasWidth}
             height={canvasHeight}
             color="#dcdbda"
             blendMode="overlay"
-          />
+          /> */}
           <Rect
             x={0}
             y={0}

@@ -1,9 +1,11 @@
-import { View, Text, Pressable, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
+import { View } from "../../components/themed/Themed";
 import React from "react";
 import { useAuth } from "@clerk/clerk-expo";
-import { Ionicons } from "@expo/vector-icons";
+import MyButton from "../../components/themed/MyButton";
+import MyText from "../../components/themed/MyText";
 
-export const LogoutButton = () => {
+export const ProfilePage = () => {
   const { signOut } = useAuth();
 
   const doLogout = () => {
@@ -11,22 +13,15 @@ export const LogoutButton = () => {
   };
 
   return (
-    <Pressable onPress={doLogout} style={styles.button}>
-      <View style={styles.buttonLayout}>
-        <Ionicons name="log-out-outline" size={20} color="#fff" />
-        <Text style={{ color: "#fff", fontWeight: "bold", fontSize: 16 }}>
-          Logout
-        </Text>
-      </View>
-    </Pressable>
-  );
-};
-
-const ProfilePage = () => {
-  return (
     <View style={styles.container}>
-      <Text style={{ fontWeight: "bold", fontSize: 20 }}>Profile Page</Text>
-      <LogoutButton />
+      <MyText type="title">Profile Page</MyText>
+
+      <MyButton
+        onPress={doLogout}
+        label="Logout"
+        type="primary"
+        iconName="log-out"
+      />
     </View>
   );
 };
@@ -38,20 +33,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-  },
-  button: {
-    marginVertical: 20,
-    borderRadius: 4,
-    padding: 15,
-    backgroundColor: "#6c47ff",
-    marginBottom: 20,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  buttonLayout: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 10,
+    paddingHorizontal: 40,
   },
 });

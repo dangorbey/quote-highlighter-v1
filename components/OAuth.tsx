@@ -4,7 +4,7 @@ import { useWarmUpBrowser } from "../hooks/useWarmUpBrowser";
 import { useOAuth } from "@clerk/clerk-expo";
 import type { OAuthStrategy } from "@clerk/types";
 
-import MyButton, { MyButtonProps } from "./MyButton";
+import MyButton, { MyButtonProps } from "./themed/MyButton";
 
 interface OAuthProps extends MyButtonProps {
   authStrat: OAuthStrategy;

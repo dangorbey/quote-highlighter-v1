@@ -7,7 +7,7 @@ import {
   useColorScheme,
 } from "react-native";
 import MyText from "./MyText";
-import Colors from "../constants/Colors";
+import Colors from "../../constants/Colors";
 
 const styles = StyleSheet.create({
   container: {
