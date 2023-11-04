@@ -5,7 +5,6 @@ import { useUser } from "@clerk/clerk-expo";
 import { router } from "expo-router";
 import MyButton from "../../components/themed/MyButton";
 import MyText from "../../components/themed/MyText";
-import { HighlightCanvas } from "../../components/HighlightCanvas";
 
 const LibraryPage = () => {
   const { user } = useUser();

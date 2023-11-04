@@ -1,21 +1,46 @@
-import { Text, ImageBackground, StyleSheet } from "react-native";
-import React, { useEffect, useRef, useState } from "react";
-import { useUser } from "@clerk/clerk-expo";
-import { CreateCanvas } from "../../components/CreateCanvas";
+import {
+  Text,
+  StyleSheet,
+  SafeAreaView,
+  LayoutChangeEvent,
+  ImageBackground,
+  Platform,
+} from "react-native";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import MyText from "../../components/themed/MyText";
+import QuoteText from "../../components/themed/QuoteText";
+import MyButton from "../../components/themed/MyButton";
+import { QuoteBG } from "../../components/QuoteBG";
 import { captureRef } from "react-native-view-shot";
 import * as Sharing from "expo-sharing";
 import { TextEditor } from "../../components/TextEditor";
-import { View } from "../../components/themed/Themed";
-import MyButton from "../../components/themed/MyButton";
-import MyText from "../../components/themed/MyText";
 import Highlighter from "../../components/Highlighter";
-import QuoteText from "../../components/themed/QuoteText";
+import { View } from "../../components/themed/Themed";
+import Quotes from "../../constants/Quotes";
 
 const CreatePage = () => {
-  const { user } = useUser();
+  const getRandomQuote = () => {
+    const randomIndex = Math.floor(Math.random() * Quotes.length);
+    return Quotes[randomIndex].text;
+  };
+
+  const [canvasWidth, setCanvasWidth] = useState<number>(300);
+  const [canvasHeight, setCanvasHeight] = useState<number>(300);
+  const viewRef = useRef<ImageBackground>(null);
+
+  const onLayout = useCallback((event: LayoutChangeEvent) => {
+    const { width, height } = event.nativeEvent.layout;
+    setCanvasWidth(width);
+    setCanvasHeight(height);
+  }, []);
+
+  useEffect(() => {
+    console.log("Height: " + canvasHeight, "Width: " + canvasWidth);
+  }, [canvasHeight, canvasWidth]);
 
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [clearHighlights, setClearHighlights] = useState(false);
+  const [myAspectRatio, setmyAspectRatio] = useState({ aspectRatio: "1 / 1" });
 
   function handleModalOpen() {
     setIsModalVisible(true); // Just closing the modal without saving
@@ -34,13 +59,7 @@ const CreatePage = () => {
     setClearHighlights(false);
   };
 
-  const [quote, setQuote] = useState(
-    `There is an entry in Baudelaire' Journal Intime that is fearful in the precision of its cynicism: "One must work, if not from taste then at least from despair. For, to reduce everything to a single truth: work is less boring than pleasure.`
-  );
-  const lorem =
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam quis sem orci. Donec eu sem sapien. Fusce iaculis ipsum sed ipsum suscipit, vel venenatis neque bibendum. Vestibulum eget cursus nisi, vel feugiat tortor. Morbi imperdiet malesuada tincidunt. Duis sed ante pretium, dapibus ligula vitae, malesuada justo. Nulla hendrerit, diam ac ornare convallis, tellus orci semper nisl, in vulputate erat nisi placerat enim. Proin non ultrices eros, ac mattis lorem. Proin pharetra sem nec velit pellentesque lacinia. Suspendisse vitae consectetur enim, eu malesuada sem. Maecenas sit amet facilisis nulla. Donec eget augue a lacus porta fermentum. Maecenas efficitur tortor id lacus auctor, vel efficitur erat porttitor. Proin nec ante vitae mi consectetur lacinia. Etiam pellentesque volutpat nunc vitae congue.";
-
-  const viewRef = useRef<ImageBackground>(null);
+  const [quote, setQuote] = useState(getRandomQuote());
 
   const shareDummyImage = async () => {
     try {
@@ -69,56 +88,83 @@ const CreatePage = () => {
   }
 
   return (
-    <View style={styles.container}>
-      <MyText type="title">Style Your Quote</MyText>
-      <MyText type="quote">
-        Tap on words to <QuoteText type="highlight">highlight</QuoteText> them!
-      </MyText>
-      <View style={{ height: 10 }} />
-      <View style={{ borderColor: "#fff", borderWidth: 4, borderRadius: 5 }}>
-        <ImageBackground
-          source={require("../../assets/images/paper-bg-01.jpg")}
-          resizeMode="cover"
-          ref={viewRef}
-          style={styles.captureView}
-        >
-          <>
-            <View style={styles.overlayTextContainer}>
-              {quote && (
-                <Highlighter
-                  key={quote}
-                  quote={quote}
-                  clearHighlights={clearHighlights}
-                  onClearHighlightsDone={onClearHighlightsDone}
-                />
-              )}
-            </View>
-
-            <CreateCanvas />
-          </>
-        </ImageBackground>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.header}>
+        <MyText type="title">Style Your Quote</MyText>
+        <MyText type="quote">
+          Tap on words to <QuoteText type="highlight">highlight</QuoteText>{" "}
+          them!
+        </MyText>
       </View>
-      <View style={styles.buttonRow}>
+      <View style={styles.edit}>
+        <View style={styles.padding}>
+          <View
+            style={[styles.frame, myAspectRatio]}
+            onLayout={onLayout}
+            ref={viewRef}
+          >
+            <ImageBackground
+              source={require("../../assets/images/paper-bg-01.jpg")}
+              resizeMode="cover"
+              style={styles.captureView}
+            >
+              <View style={styles.overlayTextContainer}>
+                {quote && (
+                  <Highlighter
+                    key={quote}
+                    quote={quote}
+                    clearHighlights={clearHighlights}
+                    onClearHighlightsDone={onClearHighlightsDone}
+                  />
+                )}
+              </View>
+              <QuoteBG width={canvasWidth} height={canvasHeight} />
+            </ImageBackground>
+          </View>
+        </View>
+      </View>
+      <View style={styles.buttons}>
         <MyButton
           label="Edit"
           type="primary"
           iconName="pencil"
           onPress={handleModalOpen}
-          style={{ flex: 1 }}
+          style={{ paddingHorizontal: 10, width: "30%" }}
         />
         <MyButton
           label="Share"
           type="primary"
           iconName="share"
           onPress={shareDummyImage}
-          style={{ flex: 1 }}
+          style={{ paddingHorizontal: 10, width: "30%" }}
         />
         <MyButton
           label="Clear"
-          type="secondary"
+          type="secondaryStroke"
           iconName="close-circle-outline"
           onPress={handleClearHighlights}
-          style={{ flex: 1 }}
+          style={{ paddingHorizontal: 10, width: "30%" }}
+        />
+        <MyButton
+          label="1 / 1"
+          type="secondary"
+          iconName="expand-outline"
+          onPress={() => setmyAspectRatio({ aspectRatio: "1 / 1" })}
+          style={{ paddingHorizontal: 10, width: "30%" }}
+        />
+        <MyButton
+          label="4 / 5"
+          type="secondary"
+          iconName="expand-outline"
+          onPress={() => setmyAspectRatio({ aspectRatio: "4 / 5" })}
+          style={{ paddingHorizontal: 10, width: "30%" }}
+        />
+        <MyButton
+          label="9 / 16"
+          type="secondary"
+          iconName="expand-outline"
+          onPress={() => setmyAspectRatio({ aspectRatio: "9 / 16" })}
+          style={{ paddingHorizontal: 10, width: "30%" }}
         />
       </View>
       <TextEditor
@@ -127,7 +173,7 @@ const CreatePage = () => {
         onClose={handleModalClose}
         onSave={handleSave}
       />
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -136,17 +182,48 @@ export default CreatePage;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingTop: Platform.OS === "ios" ? 0 : 40,
+  },
+  header: {
+    // flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    // backgroundColor: "#fff",
+    padding: 10,
     gap: 10,
+    borderBottomColor: "#bbbbbb",
+    borderBottomWidth: 0.5,
+  },
+  edit: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    // backgroundColor: "tomato",
+    padding: 10,
+  },
+  padding: {
+    padding: 4,
+    backgroundColor: "#fff",
+    borderRadius: 5,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  frame: {
+    width: "100%",
+    maxWidth: "100%",
+    maxHeight: "100%",
+    height: "auto",
+
+    backgroundColor: "#dcdbda",
+    alignItems: "center",
+    justifyContent: "center",
+
+    aspectRatio: 1 / 1,
+    // aspectRatio: 4 / 5,
+    // aspectRatio: 9 / 16,
   },
   captureView: {
-    aspectRatio: 1 / 1,
-    width: 300,
-    height: 300,
-    justifyContent: "center",
-    alignContent: "center",
-    overflow: "hidden",
+    flex: 1,
   },
   overlayTextContainer: {
     position: "absolute",
@@ -160,9 +237,13 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
     padding: 25,
   },
-  buttonRow: {
-    width: 300,
+  buttons: {
     flexDirection: "row",
-    gap: 10,
+    flexWrap: "wrap",
+    padding: 10,
+    justifyContent: "space-around",
+    borderTopColor: "#bbbbbb",
+    borderTopWidth: 0.5,
+    // backgroundColor: "orange",
   },
 });
