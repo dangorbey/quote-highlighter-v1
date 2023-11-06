@@ -83,7 +83,7 @@ export const CreateCanvas = () => {
           >
             <LinearGradient
               start={vec(0, 0)}
-              end={vec(canvasWidth / 3, -4)}
+              end={vec(canvasWidth / 4, -4)}
               colors={["#3f38291f", "#00000001"]}
             />
           </Rect>

@@ -7,9 +7,7 @@ import Colors from "../../constants/Colors";
 export const LogoutButton = () => {
   const { signOut } = useAuth();
 
-  const doLogout = () => {
-    signOut();
-  };
+  const doLogout = () => signOut();
 
   return (
     <Pressable onPress={doLogout} style={{ marginRight: 10 }}>
@@ -41,10 +39,17 @@ const TabsPage = () => {
         redirect={!isSignedIn}
       />
       <Tabs.Screen
-        name="create"
+        name="create/[quote]"
         options={{
+          href: {
+            pathname: "/[quote]",
+            params: {
+              quote: "hello there",
+            },
+          },
           headerTitle: "Create a Quote",
           headerShown: false,
+          tabBarLabel: "Create",
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="add-circle" size={size} color={color} />
           ),

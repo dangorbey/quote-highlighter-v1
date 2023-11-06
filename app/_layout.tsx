@@ -51,7 +51,6 @@ const Rootlayout = () => {
   return (
     <ClerkProvider publishableKey={CLERK_PUBLIC_KEY!} tokenCache={tokenCache}>
       <InitialLayout />
-      {/* <Slot /> */}
     </ClerkProvider>
   );
 };

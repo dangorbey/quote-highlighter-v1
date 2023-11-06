@@ -43,14 +43,14 @@ const CreatePage = () => {
   const [myAspectRatio, setmyAspectRatio] = useState({ aspectRatio: "1 / 1" });
 
   function handleModalOpen() {
-    setIsModalVisible(true); // Just closing the modal without saving
+    setIsModalVisible(true);
   }
   function handleModalClose() {
-    setIsModalVisible(false); // Just closing the modal without saving
+    setIsModalVisible(false);
   }
 
   function handleSave(newQuote: string) {
-    setQuote(newQuote); // Updating the quote
+    setCreateQuote(newQuote); // Updating the quote
 
     setIsModalVisible(false); // Closing the modal after saving
   }
@@ -59,7 +59,7 @@ const CreatePage = () => {
     setClearHighlights(false);
   };
 
-  const [quote, setQuote] = useState(getRandomQuote());
+  const [createQuote, setCreateQuote] = useState(getRandomQuote());
 
   const shareDummyImage = async () => {
     try {
@@ -109,10 +109,10 @@ const CreatePage = () => {
               style={styles.captureView}
             >
               <View style={styles.overlayTextContainer}>
-                {quote && (
+                {createQuote && (
                   <Highlighter
-                    key={quote}
-                    quote={quote}
+                    key={createQuote}
+                    quote={createQuote}
                     clearHighlights={clearHighlights}
                     onClearHighlightsDone={onClearHighlightsDone}
                   />
@@ -168,7 +168,7 @@ const CreatePage = () => {
         />
       </View>
       <TextEditor
-        quote={quote}
+        quote={createQuote}
         isVisible={isModalVisible}
         onClose={handleModalClose}
         onSave={handleSave}

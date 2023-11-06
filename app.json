@@ -7,19 +7,14 @@
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
+    "splash": {
+      "image": "./assets/images/splash.png",
+      "resizeMode": "cover",
+      "backgroundColor": "#F7F5EE"
+    },
 
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "splash": {
-        "image": "./assets/images/splash.png",
-        "resizeMode": "cover",
-        "backgroundColor": "#F7F5EE",
-        "dark": {
-          "image": "./assets/images/splash.png",
-          "resizeMode": "cover",
-          "backgroundColor": "#1F1800"
-        }
-      },
       "supportsTablet": true
     },
     "android": {
